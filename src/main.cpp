@@ -127,7 +127,7 @@ void setup()
      */
 
     lv_obj_t *label = lv_label_create( lv_screen_active() );
-    lv_label_set_text( label, "Hello Katia, I'm LVGL!" );
+    lv_label_set_text( label, "Hello World, I'm LVGL!" );
     lv_obj_align( label, LV_ALIGN_CENTER, 0, 0 );
 
     Serial.println( "Setup done" );
