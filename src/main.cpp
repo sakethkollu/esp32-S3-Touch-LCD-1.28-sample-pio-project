@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <CST816S.h>
+#include <config/CST816S_pin_config.h>
 #include <lvgl.h>
 #if LV_USE_TFT_ESPI
 #include <TFT_eSPI.h>
@@ -11,6 +13,9 @@
 
 //#include <examples/lv_examples.h>
 //#include <demos/lv_demos.h>
+
+// Set Touch Driver
+CST816S touch(TOUCH_SDA, TOUCH_SCL, TOUCH_RST, TOUCH_IRQ);	// sda, scl, rst, irq
 
 /*Set to your screen resolution and rotation*/
 #define TFT_HOR_RES   240
@@ -50,19 +55,22 @@ void my_disp_flush( lv_display_t *disp, const lv_area_t *area, uint8_t * px_map)
 /*Read the touchpad*/
 void my_touchpad_read( lv_indev_t * indev, lv_indev_data_t * data )
 {
-    /*For example  ("my_..." functions needs to be implemented by you)
-    int32_t x, y;
-    bool touched = my_get_touch( &x, &y );
-
+    
+    bool touched = touch.available();
     if(!touched) {
         data->state = LV_INDEV_STATE_RELEASED;
     } else {
         data->state = LV_INDEV_STATE_PRESSED;
 
-        data->point.x = x;
-        data->point.y = y;
+        data->point.x = touch.data.x;
+        data->point.y = touch.data.y;
+
+        Serial.print( "Data x " );
+        Serial.println( touch.data.x );
+
+        Serial.print( "Data y " );
+        Serial.println( touch.data.y );
     }
-     */
 }
 
 /*use Arduinos millis() as tick source*/
@@ -73,12 +81,14 @@ static uint32_t my_tick(void)
 
 void setup()
 {
+    touch.begin();
+    
     String LVGL_Arduino = "Hello Arduino! ";
     LVGL_Arduino += String('V') + lv_version_major() + "." + lv_version_minor() + "." + lv_version_patch();
 
     Serial.begin( 9600 );
     Serial.println( LVGL_Arduino );
-
+    
     lv_init();
 
     /*Set a tick source so that LVGL will know how much time elapsed. */
