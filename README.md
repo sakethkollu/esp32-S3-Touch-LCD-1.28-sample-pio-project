@@ -31,4 +31,7 @@ For the first use of this board, make sure to make the following steps to be abl
     2.1 In MacOS - Look for `/dev/cu.wchusbserial578E0234371` if WCH Driver is installed
 3. To build and run: `pio run --upload-port /dev/cu.wchusbserial578E0234371`
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/899ca0fd-7f4c-4ede-899f-35d2c814276b" alt="Image Description" width="300">
+</p>
 
